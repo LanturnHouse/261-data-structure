@@ -37,6 +37,21 @@ bool enqueue(LinearQueue* q, int value) {
 	return true;
 }
 
+
+void shiftQueueLeft(LinearQueue* q) {
+	if (isEmpty(q)) {
+		printf("큐가 비어있습니다.\n");
+		return;
+	}
+	printf("큐 공간 최적화중...\n");
+	for (int i = 0; i < q->rear - q->front + 1; i++) {
+		q->data[i] = q->data[q->front + i];
+	}
+	q->rear = q->rear - q->front;
+	q->front = 0;
+	printf("큐 공간 최적화 완료.\n");
+}
+
 int dequeue(LinearQueue* q) {
 	if (isEmpty(q)) {
 		printf("큐가 비어있습니다.\n");
@@ -44,15 +59,10 @@ int dequeue(LinearQueue* q) {
 	}
 	int value = q->data[q->front];
 	q->front++;
-
-	if (isEmpty(q)) {
-		printf("큐를 초기화 합니다...\n");
-		q->front = 0;
-		q->rear = -1;
-		printf("큐 초기화 완료.\n");
-	}
+	shiftQueueLeft(q);
 	return value;
 }
+
 
 void printQueue(LinearQueue* q) {
 	for (int i = q->front; i < q->rear + 1; i++) {
